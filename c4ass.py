@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-import urllib2
 import os
 import sys
 import re
