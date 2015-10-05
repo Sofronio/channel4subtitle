@@ -3,6 +3,7 @@ import urllib2
 import os
 import sys
 import re
+import fileinput
 
 def sync2time(ms_str):
 #milliseconds to ass time format
@@ -18,8 +19,7 @@ def color2ass(color):
 #color:white;  cyan  yellow  white  #11FF11
 #ass color {\c&H1A15F9&}
   ass = ''
-  color = color[6:len(color)-1]
-  #print color
+  color = color[6:len(color)-1]  
   if color[0:1] == '#':
     ass = ['{\\c&H' + color[5:7] + color[3:5] + color[1:3] + '&}', 's' + color[5:7] + color[3:5] + color[1:3]]
   elif color == 'white':
@@ -43,27 +43,39 @@ def color2ass(color):
 def endtime(sublist_input):
 #add next line start time as previous line end time
   sublist = sublist_input
-  print len(sublist)
+  print str(len(sublist)) + ' lines loaded.'
   lines_empty = list()
   end = ''  
   for i, lines in enumerate(reversed(sublist)):
+  #find empty lines
     lines[1] = end
     end = lines[0]
-    if lines[3] == '':
-          
+    if lines[3] == '':          
       lines_empty.append(len(sublist)-i-1)
   for i, lines in enumerate(lines_empty):
-    print i, lines
+  #delete empty lines    
     del sublist[lines]
-  print lines_empty
+  print str(len(lines_empty)) + ' empty lines deleted.'
+  print str(len(sublist)) + ' lines left.'
   return sublist
-  
-xmlfile = sys.argv[1]
-tree = ET.parse(xmlfile)
-root = tree.getroot()
-title = root.find('Body')
+
+file = open(sys.argv[1])
+
+plainlines = ''
+ 
+while 1:
+#replace invalid <br> for <br />
+    lines = file.readlines(100000)
+    if not lines:
+        break
+    for i, line in enumerate(lines):
+        plainlines = plainlines + line.replace('<br>', '<br />')        
+    break;
+tree = ET.fromstring(plainlines)
+
+title = tree.find('Body')
 subtitles_list = list()
-for Sync in root.iter(tag='Sync'):
+for Sync in title.iter(tag='Sync'):
   subtitle_list = ['', '', '', '']
   #start, end, style, content
   #start time
@@ -119,3 +131,4 @@ for i, lines in enumerate(ass_output):
 output = open(sys.argv[1] + '.ass','w+b')
 output.writelines(ass_output)
 output.close()
+print 'Process complete. ASS Subtitle output: ' + sys.argv[1] + '.ass'
