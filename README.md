@@ -1,6 +1,11 @@
 # channel4subtitle
 Support Channel4 subtitle download and convert<br />
 
+------------------------
+v0.1.1 Support `<br>` to `<br />` replacement.
+V0.1.0 First version.
+------------------------
+
 ## c4d.py
 c4d.py could download subtitles and thumbnails using Channel4's XML file. You can find it here, like this:<br />
 If you're browsing<br />
@@ -14,10 +19,6 @@ c4ass.py could convert Channel4's plain text to ASS subtitle. Or, if you look in
 
 ## Note c4d.py
 This version requires you to manually download the program XML file.
-
-## Note c4ass.py
-This version requires you to manually replace all the `<br>` label to `<br />`<br />
-As I use XML structure for subtilte processing, the `<br>` label is not a valid XML label.<br />
 
 ## Usage
 c4d.py channel4program.xml<br />
