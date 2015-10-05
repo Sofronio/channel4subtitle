@@ -1,22 +1,3 @@
-'''
-import urllib2
-subfile = urllib2.urlopen("http://ais.channel4.com/subtitles/3612329")
-output = open('3612329.txt','w+b')
-#output = open('3612329.txt','w+b')
-output.write(subfile.read())
-output.close()
-'''
-
-'''
-import xml.etree.ElementTree as ET
-tree = ET.parse('jamies-super-food.xml')
-root = tree.getroot()
-for episodeList in root.findall('episodeList'):
-  requestId = episodeList.find('requestId')
-  print requestId
-'''
-
-
 import xml.etree.ElementTree as ET
 import urllib2
 import os
